@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>connectFourAI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">connectFourAI.java</span></div><h1>connectFourAI.java</h1><pre class="source lang-java linenums">import java.awt.Point;
+
+public class connectFourAI {
+
+	// 1 is red, 2 is blue
+<span class="fc" id="L6">	private int AICol = -1;</span>
+<span class="fc" id="L7">	private int playerCol = -1;</span>
+
+	// default constructor
+<span class="fc" id="L10">	public connectFourAI(int playerCol, int AICol) {</span>
+<span class="fc" id="L11">		this.AICol = AICol;</span>
+<span class="fc" id="L12">		this.playerCol = playerCol;</span>
+<span class="fc" id="L13">	}</span>
+
+	// set the colors of AI and Player
+	public void setCol(int playerCol, int AICol) {
+<span class="nc" id="L17">		this.AICol = AICol;</span>
+<span class="nc" id="L18">		this.playerCol = playerCol;</span>
+<span class="nc" id="L19">	}</span>
+
+	// this method finds the best move
+	// for the AI to make. it goes from
+	// the worst move to the best for
+	// itself to make, then checks the best
+	// move in order to block the player.
+	// the method is ordered in the order of
+	// priority, with highest priority last
+	// as it will change &quot;move&quot; last.
+	public Point bestMove(int[][] board) {
+
+<span class="fc" id="L31">		Point best = new Point(-1, -1);</span>
+
+<span class="fc" id="L33">		best = blockThrees(board);</span>
+<span class="pc bpc" id="L34" title="3 of 4 branches missed.">		if (!best.equals(new Point(-1, -1)) &amp;&amp; board[best.x][best.y] == 0)</span>
+<span class="nc" id="L35">			return best;</span>
+		else
+<span class="fc" id="L37">			best = new Point(-1, -1);</span>
+
+<span class="fc" id="L39">		best = AIThrees(board);</span>
+<span class="pc bpc" id="L40" title="3 of 4 branches missed.">		if (!best.equals(new Point(-1, -1)) &amp;&amp; board[best.x][best.y] == 0)</span>
+<span class="nc" id="L41">			return best;</span>
+		else
+<span class="fc" id="L43">			best = new Point(-1, -1);</span>
+
+<span class="fc" id="L45">		best = blockTwos(board);</span>
+<span class="pc bpc" id="L46" title="3 of 4 branches missed.">		if (!best.equals(new Point(-1, -1)) &amp;&amp; board[best.x][best.y] == 0)</span>
+<span class="nc" id="L47">			return best;</span>
+		else
+<span class="fc" id="L49">			best = new Point(-1, -1);</span>
+
+<span class="fc" id="L51">		best = AITwos(board);</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">		if (!best.equals(new Point(-1, -1)) &amp;&amp; board[best.x][best.y] == 0)</span>
+<span class="nc" id="L53">			return best;</span>
+		else
+<span class="fc" id="L55">			best = new Point(-1, -1);</span>
+
+<span class="fc" id="L57">		best = makePair(board);</span>
+
+<span class="fc" id="L59">		return best;</span>
+	}
+
+	// makes pairs of spaces when
+	// there are no better moves
+	public Point makePair(int[][] board) {
+<span class="fc" id="L65">		Point move = new Point(-1, -1);</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		for (int row = 5; row &gt;= 0; row--) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+				// start from worst option and
+				// go to best option
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">				if (row &gt; 0) {</span>
+					// verticals
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">					if (board[row][col] == AICol &amp;&amp; board[row - 1][col] == 0) {</span>
+<span class="nc" id="L75">						move = new Point(row - 1, col);</span>
+					}
+
+					// diagonals
+<span class="fc bfc" id="L79" title="All 2 branches covered.">					if (col &gt; 0)</span>
+<span class="pc bpc" id="L80" title="3 of 6 branches missed.">						if (board[row][col] == AICol</span>
+								&amp;&amp; board[row - 1][col - 1] == 0
+								&amp;&amp; board[row][col - 1] != 0)
+<span class="nc" id="L83">							move = new Point(row - 1, col - 1);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">					if (col &lt; 6)</span>
+<span class="pc bpc" id="L85" title="3 of 6 branches missed.">						if (board[row][col] == AICol</span>
+								&amp;&amp; board[row - 1][col + 1] == 0
+								&amp;&amp; board[row][col + 1] != 0)
+<span class="nc" id="L88">							move = new Point(row - 1, col + 1);</span>
+				}
+
+				// horizontals, always
+				// build towards empty space
+<span class="fc bfc" id="L93" title="All 2 branches covered.">				if (board[row][col] == AICol) {</span>
+<span class="fc" id="L94">					int left = 0, right = 0, index = col;</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">					while (index &gt; 0 &amp;&amp; board[row][index] == 0) {</span>
+<span class="nc" id="L96">						left++;</span>
+<span class="nc" id="L97">						index--;</span>
+					}
+<span class="fc" id="L99">					index = col;</span>
+<span class="pc bpc" id="L100" title="1 of 4 branches missed.">					while (index &lt; 6 &amp;&amp; board[row][index] == 0) {</span>
+<span class="nc" id="L101">						right++;</span>
+<span class="nc" id="L102">						index++;</span>
+					}
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">					if (left &gt;= right) {</span>
+<span class="fc" id="L105">						move = new Point(row, col - 1);</span>
+					} else
+<span class="nc" id="L107">						move = new Point(row, col + 1);</span>
+				}
+			}
+		}
+
+		// just in case none of the methods
+		// return a better case, just select
+		// an arbitrary spot
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		if (move.equals(new Point(-1, -1))) {</span>
+<span class="fc" id="L116">			int col = 3;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			while (board[0][col] != 0) {</span>
+<span class="nc" id="L118">				col++;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">				if (col == 6)</span>
+<span class="nc" id="L120">					col = 0;</span>
+			}
+<span class="fc" id="L122">			move = new Point(5, col);</span>
+		}
+
+<span class="fc" id="L125">		return move;</span>
+	}
+
+	// blocks scenarios where there are 3
+	// filled spaces out of 4 in a row
+	public Point blockThrees(int[][] board) {
+<span class="fc" id="L131">		Point move = new Point(-1, -1);</span>
+<span class="fc" id="L132">		Point temp = new Point(-1, -1);</span>
+
+		// check horizontals
+		// count from the bottom row upwards
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int row = 5; row &gt;= 0; row--){</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">			for (int col = 0; col &lt; 4; col++){</span>
+<span class="fc" id="L138">				int count = 0;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">				for (int index = 0; index &lt; 4; index++){</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">					if(board[row][col+index] == playerCol){</span>
+<span class="fc" id="L141">						count++;</span>
+					}
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">					else if (board[row][col+index] == AICol){</span>
+<span class="nc" id="L144">						count--;</span>
+					}
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">					else if (board[row][col+index] == 0){</span>
+<span class="fc" id="L147">						temp = new Point(row, col+index);</span>
+					}
+				}
+<span class="fc" id="L150">				System.out.println(count);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">				if (count == 3){</span>
+<span class="nc" id="L152">					return new Point(temp.x, temp.y);</span>
+				}
+<span class="fc" id="L154">				count = 0;</span>
+			}
+		}
+		
+		// check for 3 in a row verticals
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int col = 0; col &lt; 7; col++) {</span>
+			// only need to check bottom 3 rows
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			for (int row = 5; row &gt;= 3; row--) {</span>
+<span class="pc bpc" id="L162" title="3 of 8 branches missed.">				if (board[row][col] == playerCol</span>
+						&amp;&amp; board[row - 1][col] == playerCol
+						&amp;&amp; board[row - 2][col] == playerCol
+						&amp;&amp; board[row - 3][col] == 0) {
+<span class="nc" id="L166">					return new Point(row - 3, col);</span>
+				}
+			}
+		}
+
+		// check for 3/4 diagonals
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int row = 5; row &gt;= 3; row--) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+				// only need to check bottom 3 rows
+				// need to check the diagonals PLUS the
+				// ones directly below, so it is a valid move
+				// to the left
+<span class="fc bfc" id="L178" title="All 2 branches covered.">				if (col &lt;= 3) {</span>
+<span class="fc" id="L179">					int count = 0;</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">					for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">						if (board[row - i][col + i] == playerCol) {</span>
+<span class="fc" id="L182">							count++;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">						} else if (board[row - i][col + i] == 0) {</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">							if (row != 5) {</span>
+<span class="pc bpc" id="L185" title="3 of 4 branches missed.">								if (board[row - i + 1][col + i] != 0</span>
+										&amp;&amp; board[row - i][col + i] == 0)
+<span class="nc" id="L187">									temp = new Point(row - i, col + i);</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">							} else if (board[row - i][col + i] == 0)</span>
+<span class="fc" id="L189">								temp = new Point(row - i, col + i);</span>
+						}
+					}
+<span class="pc bpc" id="L192" title="5 of 6 branches missed.">					if (count == 3 &amp;&amp; !move.equals(new Point(-1, -1))</span>
+							&amp;&amp; board[temp.x][temp.y] == 0) {
+<span class="nc" id="L194">						return new Point(temp.x, temp.y);</span>
+<span class="pc bpc" id="L195" title="3 of 4 branches missed.">					} else if (count == 3 &amp;&amp; board[row - 3][col + 3] == 0) {</span>
+<span class="nc" id="L196">						return new Point(row - 3, col + 3);</span>
+					}
+<span class="fc" id="L198">					count = 0;</span>
+				}
+<span class="fc bfc" id="L200" title="All 2 branches covered.">				if (col &gt;= 3) {</span>
+<span class="fc" id="L201">					int count = 0;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">					for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">						if (board[row - i][col - i] == playerCol) {</span>
+<span class="fc" id="L204">							count++;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">						} else if (board[row - i][col - i] == 0) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">							if (row != 5) {</span>
+<span class="pc bpc" id="L207" title="3 of 4 branches missed.">								if (board[row - i + 1][col - i] != 0</span>
+										&amp;&amp; board[row - i][col - i] == 0)	
+<span class="nc" id="L209">									temp = new Point(row - i, col - i);</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">							} else if (board[row - i][col - i] == 0)</span>
+<span class="fc" id="L211">								temp = new Point(row - i, col - i);</span>
+						}
+					}
+<span class="pc bpc" id="L214" title="5 of 6 branches missed.">					if (count == 3 &amp;&amp; !move.equals(new Point(-1, -1))</span>
+							&amp;&amp; board[temp.x][temp.y] == 0) {
+<span class="nc" id="L216">						return new Point(temp.x, temp.y);</span>
+<span class="pc bpc" id="L217" title="3 of 4 branches missed.">					} else if (count == 3 &amp;&amp; board[row - 3][col - 3] == 0) {</span>
+<span class="nc" id="L218">						return new Point(row - 3, col - 3);</span>
+					}
+<span class="fc" id="L220">					count = 0;</span>
+				}
+			}
+		}
+
+<span class="fc" id="L225">		return move;</span>
+	}
+
+	// places the winning tile where there
+	// are 3 filled spaces out of 4 in a row
+	public Point AIThrees(int[][] board) {
+<span class="fc" id="L231">		Point move = new Point(-1, -1);</span>
+<span class="fc" id="L232">		Point temp = new Point(-1, -1);</span>
+
+		// check horizontals
+		// count from the bottom row upwards
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (int row = 5; row &gt;= 0; row--){</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			for (int col = 0; col &lt; 4; col++){</span>
+<span class="fc" id="L238">				int count = 0;</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">				for (int index = 0; index &lt; 4; index++){</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">					if(board[row][col+index] == AICol){</span>
+<span class="fc" id="L241">						count++;</span>
+					}
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">					else if (board[row][col] == playerCol){</span>
+<span class="nc" id="L244">						count--;</span>
+					}
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">					else if (board[row][col+index] == 0){</span>
+<span class="fc" id="L247">						temp = new Point(row, col+index);</span>
+					}
+				}
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">				if (count == 3){</span>
+<span class="nc" id="L251">					return new Point(temp.x, temp.y);</span>
+				}
+<span class="fc" id="L253">				count = 0;</span>
+			}
+		}
+
+		// check for 3 in a row verticals
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		for (int col = 0; col &lt; 7; col++) {</span>
+			// only need to check bottom 3 rows
+<span class="fc bfc" id="L260" title="All 2 branches covered.">			for (int row = 5; row &gt;= 3; row--) {</span>
+<span class="pc bpc" id="L261" title="3 of 8 branches missed.">				if (board[row][col] == AICol &amp;&amp; board[row - 1][col] == AICol</span>
+						&amp;&amp; board[row - 2][col] == AICol
+						&amp;&amp; board[row - 3][col] == 0) {
+<span class="nc" id="L264">					return new Point(row - 3, col);</span>
+				}
+			}
+		}
+
+		// check for 3/4 diagonals
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		for (int row = 5; row &gt;= 3; row--) {</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+				// only need to check bottom 3 rows
+				// need to check the diagonals PLUS the
+				// ones directly below, so it is a valid move
+<span class="fc bfc" id="L275" title="All 2 branches covered.">				if (col &lt;= 3) {</span>
+<span class="fc" id="L276">					int count = 0;</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">					for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">						if (board[row - i][col + i] == AICol) {</span>
+<span class="fc" id="L279">							count++;</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">						} else if (board[row - i][col + i] == 0) {</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">							if (row != 5) {</span>
+<span class="pc bpc" id="L282" title="3 of 4 branches missed.">								if (board[row - i + 1][col + i] != 0</span>
+										&amp;&amp; board[row - i][col + i] == 0)
+<span class="nc" id="L284">									temp = new Point(row - i, col + i);</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">							} else if (board[row - i][col + i] == 0)</span>
+<span class="fc" id="L286">								temp = new Point(row - i, col + i);</span>
+						}
+					}
+<span class="pc bpc" id="L289" title="5 of 6 branches missed.">					if (count == 3 &amp;&amp; !move.equals(new Point(-1, -1))</span>
+							&amp;&amp; board[temp.x][temp.y] == 0) {
+<span class="nc" id="L291">						return new Point(temp.x, temp.y);</span>
+<span class="pc bpc" id="L292" title="3 of 4 branches missed.">					} else if (count == 3 &amp;&amp; board[row - 3][col + 3] == 0) {</span>
+<span class="nc" id="L293">						return new Point(row - 3, col + 3);</span>
+					}
+<span class="fc" id="L295">					count = 0;</span>
+				}
+<span class="fc bfc" id="L297" title="All 2 branches covered.">				if (col &gt;= 3) {</span>
+<span class="fc" id="L298">					int count = 0;</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">					for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">						if (board[row - i][col - i] == AICol) {</span>
+<span class="fc" id="L301">							count++;</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">						} else if (board[row - i][col - i] == 0) {</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">							if (row != 5) {</span>
+<span class="pc bpc" id="L304" title="3 of 4 branches missed.">								if (board[row - i + 1][col - i] != 0</span>
+										&amp;&amp; board[row - i][col - i] == 0)
+<span class="nc" id="L306">									temp = new Point(row - i, col - i);</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">							} else if (board[row - i][col - i] == 0)</span>
+<span class="fc" id="L308">								temp = new Point(row - i, col - i);</span>
+						}
+					}
+<span class="pc bpc" id="L311" title="5 of 6 branches missed.">					if (count == 3 &amp;&amp; !move.equals(new Point(-1, -1))</span>
+							&amp;&amp; board[temp.x][temp.y] == 0) {
+<span class="nc" id="L313">						return new Point(temp.x, temp.y);</span>
+<span class="pc bpc" id="L314" title="3 of 4 branches missed.">					} else if (count == 3 &amp;&amp; board[row - 3][col - 3] == 0) {</span>
+<span class="nc" id="L315">						return new Point(row - 3, col - 3);</span>
+					}
+<span class="fc" id="L317">					count = 0;</span>
+				}
+			}
+		}
+
+<span class="fc" id="L322">		return move;</span>
+	}
+
+	// blocks scenarios where there are 2 in
+	// a row, since scenarios where it looks like
+	// 101 are not dangerous at all (since if
+	// it was 1101 or 1011 it would have been found
+	// by threes already)
+	public Point blockTwos(int[][] board) {
+<span class="fc" id="L331">		Point move = new Point(-1, -1);</span>
+
+		// only need to check the scenario
+		// 0110 since 0101 or 1010 are not
+		// dangerous (they cannot be because of
+		// the threes check). 2110 and 0112 are also
+		// not dangerous by the same logic.
+		// can assume it looks like 201100,
+		// 001102, or 001100 since if it
+		// was 101102 it would have been picked up
+		// by the threes check.
+		// 201102 is not dangerous because it can
+		// be blocked on the next turn. Therefore there
+		// are only three scenarios to check,
+		// 00110, 01010 and 01100.
+<span class="fc bfc" id="L346" title="All 2 branches covered.">		for (int row = 0; row &lt; 6; row++) {</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">			for (int col = 0; col &lt; 3; col++) {</span>
+<span class="pc bpc" id="L348" title="1 of 4 branches missed.">				if (board[row][col] == 0 &amp;&amp; board[row][col + 4] == 0) {</span>
+<span class="pc bpc" id="L349" title="5 of 6 branches missed.">					if (board[row][col + 1] == playerCol</span>
+							&amp;&amp; board[row][col + 2] == playerCol
+							&amp;&amp; board[row][col + 3] == 0)
+<span class="nc" id="L352">						return new Point(row, col + 3);</span>
+<span class="pc bpc" id="L353" title="4 of 6 branches missed.">					else if (board[row][col + 1] == 0</span>
+							&amp;&amp; board[row][col + 2] == playerCol
+							&amp;&amp; board[row][col + 3] == playerCol)
+<span class="nc" id="L356">						return new Point(row, col + 1);</span>
+<span class="pc bpc" id="L357" title="5 of 6 branches missed.">					else if (board[row][col + 1] == playerCol</span>
+							&amp;&amp; board[row][col + 2] == 0
+							&amp;&amp; board[row][col + 3] == playerCol)
+<span class="nc" id="L360">						return new Point(row, col + 2);</span>
+				}
+			}
+		}
+
+		// dont need to check vertical ones
+
+		// check diagonal. only diagonal
+		// scenarios like 00110, 01010 and 01100
+		// need to be checked.
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (int row = 5; row &gt;= 4; row--) {</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">				if (col &lt; 3) {</span>
+<span class="pc bpc" id="L373" title="12 of 16 branches missed.">					if (board[row][col] == 0 &amp;&amp; board[row - 4][col + 4] == 0</span>
+							&amp;&amp; board[row][col + 1] != 0
+							&amp;&amp; board[row - 1][col + 2] != 0
+							&amp;&amp; board[row - 2][col + 3] != 0
+							&amp;&amp; board[row - 3][col + 4] != 0
+							&amp;&amp; (row == 4 &amp;&amp; board[row + 1][col] != 0)) {
+<span class="nc bnc" id="L379" title="All 6 branches missed.">						if (board[row - 1][col + 1] == playerCol</span>
+								&amp;&amp; board[row - 2][col + 2] == playerCol
+								&amp;&amp; board[row - 3][col + 3] == 0) {
+<span class="nc" id="L382">							return new Point(row - 3, col + 3);</span>
+<span class="nc bnc" id="L383" title="All 6 branches missed.">						} else if (board[row - 1][col + 1] == 0</span>
+								&amp;&amp; board[row - 2][col + 2] == playerCol
+								&amp;&amp; board[row - 3][col + 3] == playerCol) {
+<span class="nc" id="L386">							return new Point(row - 1, col + 1);</span>
+<span class="nc bnc" id="L387" title="All 6 branches missed.">						} else if (board[row - 1][col + 1] == playerCol</span>
+								&amp;&amp; board[row - 2][col + 2] == 0
+								&amp;&amp; board[row - 3][col + 3] == playerCol) {
+<span class="nc" id="L390">							return new Point(row - 2, col + 2);</span>
+						}
+					}
+				}
+				// dont need to check when col = 3
+<span class="fc bfc" id="L395" title="All 2 branches covered.">				else if (col &gt; 3) {</span>
+<span class="pc bpc" id="L396" title="12 of 16 branches missed.">					if (board[row][col] == 0 &amp;&amp; board[row - 4][col - 4] == 0</span>
+							&amp;&amp; board[row][col - 1] != 0
+							&amp;&amp; board[row - 1][col - 2] != 0
+							&amp;&amp; board[row - 2][col - 3] != 0
+							&amp;&amp; board[row - 3][col - 4] != 0
+							&amp;&amp; (row == 4 &amp;&amp; board[row - 1][col] != 0)) {
+<span class="nc bnc" id="L402" title="All 6 branches missed.">						if (board[row - 1][col - 1] == playerCol</span>
+								&amp;&amp; board[row - 2][col - 2] == playerCol
+								&amp;&amp; board[row - 3][col - 3] == 0) {
+<span class="nc" id="L405">							return new Point(row - 3, col - 3);</span>
+<span class="nc bnc" id="L406" title="All 6 branches missed.">						} else if (board[row - 1][col - 1] == 0</span>
+								&amp;&amp; board[row - 2][col - 2] == playerCol
+								&amp;&amp; board[row - 3][col - 3] == playerCol) {
+<span class="nc" id="L409">							return new Point(row - 1, col - 1);</span>
+<span class="nc bnc" id="L410" title="All 6 branches missed.">						} else if (board[row - 1][col - 1] == playerCol</span>
+								&amp;&amp; board[row - 2][col - 2] == 0
+								&amp;&amp; board[row - 3][col - 3] == playerCol)
+<span class="nc" id="L413">							return new Point(row - 2, col - 2);</span>
+					}
+				}
+			}
+		}
+
+<span class="fc" id="L419">		return move;</span>
+	}
+
+	// looks for 00110 or 01100 scenarios
+	// since those are the only ones worth
+	// developing
+	public Point AITwos(int[][] board) {
+<span class="fc" id="L426">		Point move = new Point(-1, -1);</span>
+
+		// horizontal
+<span class="fc bfc" id="L429" title="All 2 branches covered.">		for (int row = 0; row &lt; 6; row++) {</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">			for (int col = 0; col &lt; 3; col++) {</span>
+<span class="pc bpc" id="L431" title="1 of 4 branches missed.">				if (board[row][col] == 0 &amp;&amp; board[row][col + 4] == 0) {</span>
+<span class="pc bpc" id="L432" title="5 of 6 branches missed.">					if (board[row][col + 1] == AICol</span>
+							&amp;&amp; board[row][col + 2] == AICol
+							&amp;&amp; board[row][col + 3] == 0)
+<span class="nc" id="L435">						return new Point(row, col + 3);</span>
+<span class="pc bpc" id="L436" title="4 of 6 branches missed.">					else if (board[row][col + 1] == 0</span>
+							&amp;&amp; board[row][col + 2] == AICol
+							&amp;&amp; board[row][col + 3] == AICol)
+<span class="nc" id="L439">						return new Point(row, col + 1);</span>
+<span class="pc bpc" id="L440" title="5 of 6 branches missed.">					else if (board[row][col + 1] == AICol</span>
+							&amp;&amp; board[row][col + 2] == 0
+							&amp;&amp; board[row][col + 3] == AICol)
+<span class="nc" id="L443">						return new Point(row, col + 2);</span>
+				}
+			}
+		}
+
+		// vertical
+<span class="fc bfc" id="L449" title="All 2 branches covered.">		for (int row = 0; row &lt;= 3; row++) {</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+<span class="pc bpc" id="L451" title="1 of 4 branches missed.">				if (board[row + 1][col] == AICol</span>
+						&amp;&amp; board[row + 2][col] == AICol) {
+<span class="fc" id="L453">					return new Point(row, col);</span>
+				}
+			}
+		}
+
+		// diagonal
+<span class="fc bfc" id="L459" title="All 2 branches covered.">		for (int row = 5; row &gt;= 4; row--) {</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">			for (int col = 0; col &lt; 7; col++) {</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">				if (col &lt; 3) {</span>
+<span class="pc bpc" id="L462" title="12 of 16 branches missed.">					if (board[row][col] == 0 &amp;&amp; board[row - 4][col + 4] == 0</span>
+							&amp;&amp; board[row][col + 1] != 0
+							&amp;&amp; board[row - 1][col + 2] != 0
+							&amp;&amp; board[row - 2][col + 3] != 0
+							&amp;&amp; board[row - 3][col + 4] != 0
+							&amp;&amp; (row == 4 &amp;&amp; board[row + 1][col] != 0)) {
+<span class="nc bnc" id="L468" title="All 6 branches missed.">						if (board[row - 1][col + 1] == AICol</span>
+								&amp;&amp; board[row - 2][col + 2] == AICol
+								&amp;&amp; board[row - 3][col + 3] == 0) {
+<span class="nc" id="L471">							return new Point(row - 3, col + 3);</span>
+<span class="nc bnc" id="L472" title="All 6 branches missed.">						} else if (board[row - 1][col + 1] == 0</span>
+								&amp;&amp; board[row - 2][col + 2] == AICol
+								&amp;&amp; board[row - 3][col + 3] == AICol) {
+<span class="nc" id="L475">							return new Point(row - 1, col + 1);</span>
+<span class="nc bnc" id="L476" title="All 6 branches missed.">						} else if (board[row - 1][col + 1] == AICol</span>
+								&amp;&amp; board[row - 2][col + 2] == 0
+								&amp;&amp; board[row - 3][col + 3] == AICol) {
+<span class="nc" id="L479">							return new Point(row - 2, col + 2);</span>
+						}
+					}
+				}
+				// dont need to check when col = 3
+<span class="fc bfc" id="L484" title="All 2 branches covered.">				else if (col &gt; 3) {</span>
+<span class="pc bpc" id="L485" title="12 of 16 branches missed.">					if (board[row][col] == 0 &amp;&amp; board[row - 4][col - 4] == 0</span>
+							&amp;&amp; board[row][col - 1] != 0
+							&amp;&amp; board[row - 1][col - 2] != 0
+							&amp;&amp; board[row - 2][col - 3] != 0
+							&amp;&amp; board[row - 3][col - 4] != 0
+							&amp;&amp; (row == 4 &amp;&amp; board[row - 1][col] != 0)) {
+<span class="nc bnc" id="L491" title="All 6 branches missed.">						if (board[row - 1][col - 1] == AICol</span>
+								&amp;&amp; board[row - 2][col - 2] == AICol
+								&amp;&amp; board[row - 3][col - 3] == 0) {
+<span class="nc" id="L494">							return new Point(row - 3, col - 3);</span>
+<span class="nc bnc" id="L495" title="All 6 branches missed.">						} else if (board[row - 1][col - 1] == 0</span>
+								&amp;&amp; board[row - 2][col - 2] == AICol
+								&amp;&amp; board[row - 3][col - 3] == AICol) {
+<span class="nc" id="L498">							return new Point(row - 1, col - 1);</span>
+<span class="nc bnc" id="L499" title="All 6 branches missed.">						} else if (board[row - 1][col - 1] == AICol</span>
+								&amp;&amp; board[row - 2][col - 2] == 0
+								&amp;&amp; board[row - 3][col - 3] == AICol)
+<span class="nc" id="L502">							return new Point(row - 2, col - 2);</span>
+					}
+				}
+			}
+		}
+
+<span class="fc" id="L508">		return move;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

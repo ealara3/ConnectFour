@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConnectFour.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">ConnectFour.java</span></div><h1>ConnectFour.java</h1><pre class="source lang-java linenums">/*
+ Class connectFour
+ Coded by: Maya Ramamurthy, Randa Mohsen, Manaar Hyder, Danielle Shrewd, and James Lee
+ Due: March 18, 2015
+ */
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class ConnectFour extends JFrame implements MouseListener {
+
+<span class="fc" id="L20">	int x = 20;</span>
+<span class="fc" id="L21">	int size = 20;</span>
+<span class="fc" id="L22">	static PlaceDisk place = new PlaceDisk();</span>
+<span class="fc" id="L23">	static currentPlayer player = new currentPlayer();</span>
+
+	// AI variables
+	static checkWin check;
+<span class="fc" id="L27">	boolean AIGame = false;</span>
+	static connectFourAI AI;
+	int playerCol, AICol;
+<span class="fc" id="L30">	boolean playerFirst = false;</span>
+
+	// 2P game variables
+	int playerTurn;
+
+<span class="fc" id="L35">	static int[][] winPos = new int[4][2];</span>
+<span class="fc" id="L36">	int total = 0;</span>
+
+<span class="fc" id="L38">	String progress = &quot;&quot;;</span>
+<span class="fc" id="L39">	Color colour = Color.BLACK;</span>
+	int xPos, yPos;
+	static JLabel status;
+
+	// at the beginning, sets the program to start mode so that the counters are
+	// not drawn
+<span class="fc" id="L45">	static boolean start = false;</span>
+<span class="fc" id="L46">	boolean error = false;</span>
+	// creates a polygon for the blue counter holder
+<span class="fc" id="L48">	int xPoly1[] = { 25, 18, 122, 116, 70 }; // x-coordinates</span>
+<span class="fc" id="L49">	int yPoly1[] = { 160, 270, 270, 160, 230 }; // y-coordinates</span>
+<span class="fc" id="L50">	Polygon poly1 = new Polygon(xPoly1, yPoly1, xPoly1.length); // create a</span>
+																// polygon type
+
+	// creates a polygon for the red counter holder
+<span class="fc" id="L54">	int xPoly2[] = { 879, 872, 978, 971, 924 }; // x-coordinates</span>
+<span class="fc" id="L55">	int yPoly2[] = { 160, 270, 270, 160, 230 }; // y-coordinates</span>
+<span class="fc" id="L56">	Polygon poly2 = new Polygon(xPoly2, yPoly2, xPoly2.length); // create a</span>
+																// polygon type
+
+	// must keep track of positions of the discs
+<span class="fc" id="L60">	static int[][] positions = new int[6][7];</span>
+	Memory saveGame;
+
+	// the radius of each disc
+	private static final int DISC_RADIUS = 100;
+
+	// the constructor for the game
+	public ConnectFour() {
+<span class="fc" id="L68">		super(&quot;Connect Four&quot;);</span>
+<span class="fc" id="L69">		Container contentPane = getContentPane();</span>
+<span class="fc" id="L70">		contentPane.add(new DrawingPanel(), BorderLayout.CENTER);</span>
+<span class="fc" id="L71">		contentPane.addMouseListener(this);</span>
+
+		try {
+<span class="fc" id="L74">			saveGame = new Memory();</span>
+<span class="nc" id="L75">		} catch (IOException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L77">			e.printStackTrace();</span>
+<span class="fc" id="L78">		}</span>
+<span class="fc" id="L79">	}</span>
+
+	// draws the images using the graphics object
+	private class DrawingPanel extends JPanel {
+<span class="fc" id="L83">		public DrawingPanel() {</span>
+			// set the basic parameters of the drawing panel
+<span class="fc" id="L85">			setPreferredSize(new Dimension(1000, 700));</span>
+<span class="fc" id="L86">			setOpaque(true);</span>
+<span class="fc" id="L87">			setResizable(false);</span>
+<span class="fc" id="L88">			setBackground(Color.white);</span>
+<span class="fc" id="L89">			setLayout(null);</span>
+<span class="fc" id="L90">			setFocusable(true);</span>
+<span class="fc" id="L91">			requestFocusInWindow();</span>
+
+			// create the start button
+<span class="fc" id="L94">			Button startButtonAI = new Button(&quot;New Game (AI)&quot;);</span>
+<span class="fc" id="L95">			startButtonAI.setBounds(20, 290, 100, 25);</span>
+
+<span class="fc" id="L97">			Button startButton2P = new Button(&quot;New Game (2P)&quot;);</span>
+<span class="fc" id="L98">			startButton2P.setBounds(20, 330, 100, 25);</span>
+
+<span class="fc" id="L100">			Button endButton = new Button(&quot;End Game&quot;);</span>
+<span class="fc" id="L101">			endButton.setBounds(20, 450, 100, 25);</span>
+
+<span class="fc" id="L103">			Button saveButton = new Button(&quot;Save Game&quot;);</span>
+<span class="fc" id="L104">			saveButton.setBounds(20, 370, 100, 25);</span>
+
+<span class="fc" id="L106">			Button loadButton = new Button(&quot;Load Game&quot;);</span>
+<span class="fc" id="L107">			loadButton.setBounds(20, 410, 100, 25);</span>
+
+			// add an action listener, if this button is pressed, start a new
+			// game
+<span class="fc" id="L111">			startButtonAI.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L113">					progress = &quot;Game in Progress&quot;;</span>
+
+					// set all positions to 0 (empty)
+<span class="nc bnc" id="L116" title="All 2 branches missed.">					for (int i = 0; i &lt; 6; i++) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">						for (int j = 0; j &lt; 7; j++) {</span>
+<span class="nc" id="L118">							positions[i][j] = 0;</span>
+<span class="nc" id="L119">							repaint();</span>
+						}
+					}
+
+<span class="nc" id="L123">					start = true;</span>
+<span class="nc" id="L124">					AIGame = true;</span>
+<span class="nc" id="L125">					winPos = new int[4][4];</span>
+<span class="nc" id="L126">					total = 0;</span>
+<span class="nc" id="L127">					error = false;</span>
+<span class="nc" id="L128">					colour = Color.black;</span>
+
+					// randomly decide which player
+					// goes first
+<span class="nc" id="L132">					int rand = 1 + (int) (Math.random() * 2);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">					if (rand == 1) {</span>
+<span class="nc" id="L134">						playerFirst = true;</span>
+						// player is red, AI is blue
+<span class="nc" id="L136">						playerCol = 1;</span>
+<span class="nc" id="L137">						AICol = 2;</span>
+<span class="nc" id="L138">						progress += &quot;: You are Player Red&quot;;</span>
+<span class="nc" id="L139">						AI = new connectFourAI(playerCol, AICol);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">					} else if (rand == 2) {</span>
+<span class="nc" id="L141">						playerCol = 2;</span>
+<span class="nc" id="L142">						AICol = 1;</span>
+<span class="nc" id="L143">						progress += &quot;: You are Player Blue&quot;;</span>
+<span class="nc" id="L144">						AI = new connectFourAI(playerCol, AICol);</span>
+<span class="nc" id="L145">						positions = PlaceDisk.AIPlace(AI.bestMove(positions),</span>
+								AICol, positions);
+					}
+<span class="nc" id="L148">				}</span>
+			});
+
+			// start a new 2 player game
+<span class="fc" id="L152">			startButton2P.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L154">					progress = &quot;Game in Progress&quot;;</span>
+
+					// set all positions to 0 (empty)
+<span class="nc bnc" id="L157" title="All 2 branches missed.">					for (int i = 0; i &lt; 6; i++) {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">						for (int j = 0; j &lt; 7; j++) {</span>
+<span class="nc" id="L159">							positions[i][j] = 0;</span>
+<span class="nc" id="L160">							repaint();</span>
+						}
+					}
+
+<span class="nc" id="L164">					start = true;</span>
+<span class="nc" id="L165">					winPos = new int[4][4];</span>
+<span class="nc" id="L166">					total = 0;</span>
+<span class="nc" id="L167">					error = false;</span>
+<span class="nc" id="L168">					colour = Color.black;</span>
+<span class="nc" id="L169">					AIGame = false;</span>
+
+					// randomly decide which player
+					// goes first
+<span class="nc" id="L173">					int rand = 1 + (int) (Math.random() * 2);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					if (rand == 1) {</span>
+<span class="nc" id="L175">						playerTurn = 1;</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">					} else if (rand == 2) {</span>
+<span class="nc" id="L177">						playerTurn = 2;</span>
+					}
+<span class="nc" id="L179">					playerTurn = player.getPlayer();</span>
+<span class="nc" id="L180">				}</span>
+
+			});
+
+			// when end turn is pressed
+<span class="fc" id="L185">			endButton.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L187">					System.exit(0);</span>
+<span class="nc" id="L188">				}</span>
+
+			});
+
+			// save the current game state into a text file
+<span class="fc" id="L193">			saveButton.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+					try {
+<span class="nc" id="L196">						saveGame.saveGame(positions);</span>
+<span class="nc" id="L197">					} catch (IOException e1) {</span>
+						// TODO Auto-generated catch block
+<span class="nc" id="L199">						e1.printStackTrace();</span>
+<span class="nc" id="L200">					}</span>
+<span class="nc" id="L201">				}</span>
+			});
+
+			// load a game from a text file
+<span class="fc" id="L205">			loadButton.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+					try {
+						int[][] temp;
+<span class="nc" id="L209">						temp = saveGame.loadGame();</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">						for (int i = 0; i &lt; 6; i++) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">							for (int j = 0; j &lt; 7; j++) {</span>
+<span class="nc" id="L212">								positions[i][j] = temp[i][j];</span>
+							}
+						}
+<span class="nc" id="L215">					} catch (FileNotFoundException e1) {</span>
+						// TODO Auto-generated catch block
+<span class="nc" id="L217">						e1.printStackTrace();</span>
+<span class="nc" id="L218">					}</span>
+<span class="nc" id="L219">				}</span>
+			});
+
+			// add the button to the panel
+<span class="fc" id="L223">			add(startButtonAI);</span>
+<span class="fc" id="L224">			add(startButton2P);</span>
+<span class="fc" id="L225">			add(saveButton);</span>
+<span class="fc" id="L226">			add(loadButton);</span>
+<span class="fc" id="L227">			add(endButton);</span>
+<span class="fc" id="L228">		}</span>
+
+		// the main function for drawing graphics
+		protected void paintComponent(Graphics g) {
+<span class="nc" id="L232">			super.paintComponent(g);</span>
+
+<span class="nc" id="L234">			Graphics2D g2d = (Graphics2D) g; // create 2d object</span>
+<span class="nc" id="L235">			g2d.setStroke(new BasicStroke(2)); // set thickness of line</span>
+
+			// clears the screen (overwrites the other circles)
+<span class="nc" id="L238">			g2d.clearRect(0, 0, 1000, 750);</span>
+
+<span class="nc" id="L240">			showWin show = new showWin();</span>
+
+<span class="nc" id="L242">			g2d.setColor(colour);</span>
+
+<span class="nc" id="L244">			g2d.setFont(new Font(&quot;Ariel&quot;, Font.BOLD, size));</span>
+<span class="nc" id="L245">			g2d.drawString(progress, 400, x);</span>
+
+<span class="nc" id="L247">			g2d.setColor(Color.BLACK);</span>
+
+			// each box is 100 x 100
+			// draws the vertical lines
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc" id="L252">				g2d.drawLine(140 + i * DISC_RADIUS, 30, 140 + i * DISC_RADIUS,</span>
+						690);
+			}
+			// draws the horizontal lines
+<span class="nc bnc" id="L256" title="All 2 branches missed.">			for (int i = 0; i &lt; 7; i++) {</span>
+<span class="nc" id="L257">				g2d.drawLine(140, 90 + i * DISC_RADIUS, 840, 90 + i</span>
+						* DISC_RADIUS);
+			}
+			// draws the circles
+<span class="nc bnc" id="L261" title="All 2 branches missed.">			for (int i = 0; i &lt; 6; i++) { // new vertical row of circles</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">				for (int j = 0; j &lt; 7; j++) { // new horizontal row of circles</span>
+<span class="nc" id="L263">					g2d.drawOval(140 + j * DISC_RADIUS, 90 + i * DISC_RADIUS,</span>
+							DISC_RADIUS, DISC_RADIUS);
+				}
+			}
+
+			// if at the start of the game, will not draw the counters
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (start == true) {</span>
+				// draws blue counter
+<span class="nc" id="L271">				g2d.drawOval(20, 90, DISC_RADIUS, DISC_RADIUS);</span>
+<span class="nc" id="L272">				g2d.setColor(Color.BLUE); // sets colour to blue</span>
+<span class="nc" id="L273">				g2d.fillOval(20, 90, DISC_RADIUS, DISC_RADIUS); // draws the</span>
+																// circle
+
+				// draws red counter
+<span class="nc" id="L277">				g2d.setColor(Color.BLACK);</span>
+<span class="nc" id="L278">				g2d.drawOval(875, 90, DISC_RADIUS, DISC_RADIUS);</span>
+<span class="nc" id="L279">				g2d.setColor(Color.RED); // sets the colour to red</span>
+<span class="nc" id="L280">				g2d.fillOval(875, 90, DISC_RADIUS, DISC_RADIUS); // draws the</span>
+																	// circle
+			}
+
+			// draws blue counter stand;
+<span class="nc" id="L285">			g2d.setStroke(new BasicStroke(4)); // sets the line width</span>
+<span class="nc" id="L286">			g2d.setColor(Color.BLACK); // changes the outline colour to black</span>
+<span class="nc" id="L287">			g2d.drawPolygon(poly1); // draw the outline</span>
+<span class="nc" id="L288">			g2d.setColor(Color.GRAY); // changes the fill colour to grey</span>
+<span class="nc" id="L289">			g2d.fillPolygon(poly1); // draws the filling</span>
+
+			// draws red counter stand;
+<span class="nc" id="L292">			g2d.setColor(Color.BLACK); // changes the outline colour to black</span>
+<span class="nc" id="L293">			g2d.drawPolygon(poly2); // draws the outline</span>
+<span class="nc" id="L294">			g2d.setColor(Color.GRAY); // changes the fill colour to grey</span>
+<span class="nc" id="L295">			g2d.fillPolygon(poly2); // draws the filling</span>
+
+			// print on the screen who's turn it is
+
+			// redraw the whole board (inefficient i know)
+<span class="nc bnc" id="L300" title="All 2 branches missed.">			for (int i = 0; i &lt; 6; i++) {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">				for (int j = 0; j &lt; 7; j++) {</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">					if (positions[i][j] == 1) {</span>
+<span class="nc" id="L303">						g2d.setColor(Color.RED);</span>
+<span class="nc" id="L304">						g2d.fillOval(140 + j * DISC_RADIUS, 90 + i</span>
+								* DISC_RADIUS, DISC_RADIUS, DISC_RADIUS);
+<span class="nc bnc" id="L306" title="All 2 branches missed.">					} else if (positions[i][j] == 2) {</span>
+<span class="nc" id="L307">						g2d.setColor(Color.BLUE);</span>
+<span class="nc" id="L308">						g2d.fillOval(140 + j * DISC_RADIUS, 90 + i</span>
+								* DISC_RADIUS, DISC_RADIUS, DISC_RADIUS);
+<span class="nc bnc" id="L310" title="All 2 branches missed.">					} else if (positions[i][j] == -1) {</span>
+<span class="nc" id="L311">						g2d.setColor(Color.YELLOW);</span>
+<span class="nc" id="L312">						g2d.fillOval(140 + j * DISC_RADIUS, 90 + i</span>
+								* DISC_RADIUS, DISC_RADIUS, DISC_RADIUS);
+					}
+				}
+			}
+
+<span class="nc" id="L318">			g2d.setColor(Color.black);</span>
+<span class="nc bnc" id="L319" title="All 6 branches missed.">			if (total == 1 | total == 2) {</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">				for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L321">					g2d.fillOval(180 + winPos[i][1] * DISC_RADIUS, 130</span>
+							+ winPos[i][0] * DISC_RADIUS, 25, 25);
+				}
+			}
+
+<span class="nc" id="L326">			repaint();</span>
+
+<span class="nc" id="L328">		}</span>
+
+	}
+
+	// get x and y coordinates for where user has clicked and prints to console
+	public void mouseClicked(MouseEvent e) {
+		// get x and y coordinates
+<span class="nc" id="L335">		xPos = e.getX();</span>
+<span class="nc" id="L336">		yPos = e.getY();</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">		if (start == true) {</span>
+			// make sure circles are in bounds of the board
+<span class="nc bnc" id="L339" title="All 8 branches missed.">			if (xPos &gt; 100 &amp;&amp; xPos &lt; 840 &amp;&amp; yPos &gt; 30 &amp;&amp; yPos &lt; 690) {</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">				if (positions[0][(xPos - 140) / DISC_RADIUS] == 0) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">					if (AIGame) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">						if (playerFirst == false) {</span>
+							// check for AI win and update if so
+<span class="nc" id="L344">							Check.Update(positions);</span>
+<span class="nc" id="L345">							total = Check.returnTotal();</span>
+<span class="nc" id="L346">							winPos = Check.returnPos();</span>
+<span class="nc bnc" id="L347" title="All 6 branches missed.">							if (total == 1 | total == 2) {</span>
+<span class="nc" id="L348">								showWin show = new showWin();</span>
+<span class="nc" id="L349">								progress = show.show(positions, total);</span>
+<span class="nc" id="L350">								colour = show.getColour();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">							} else if (total == -1) {</span>
+<span class="nc" id="L352">								progress = &quot;GAME OVER&quot;;</span>
+<span class="nc" id="L353">								colour = Color.magenta;</span>
+							}
+						}
+
+<span class="nc bnc" id="L357" title="All 2 branches missed.">						else if (playerFirst == true)</span>
+<span class="nc" id="L358">							positions = PlaceDisk.place(new Point(xPos, yPos),</span>
+									playerCol, positions);
+					} else {
+<span class="nc" id="L361">						positions = PlaceDisk.place(new Point(xPos, yPos),</span>
+<span class="nc" id="L362">								player.getPlayer(), positions);</span>
+					}
+
+<span class="nc" id="L365">					Check.Update(positions);</span>
+<span class="nc" id="L366">					total = Check.returnTotal();</span>
+<span class="nc" id="L367">					winPos = Check.returnPos();</span>
+<span class="nc bnc" id="L368" title="All 6 branches missed.">					if (total == 1 | total == 2) {</span>
+<span class="nc" id="L369">						showWin show = new showWin();</span>
+<span class="nc" id="L370">						progress = show.show(positions, total);</span>
+<span class="nc" id="L371">						colour = show.getColour();</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">					} else if (total == -1) {</span>
+<span class="nc" id="L373">						progress = &quot;GAME OVER&quot;;</span>
+<span class="nc" id="L374">						colour = Color.magenta;</span>
+					}
+
+<span class="nc bnc" id="L377" title="All 2 branches missed.">					if (AIGame) {</span>
+<span class="nc" id="L378">						Point best = AI.bestMove(positions);</span>
+
+<span class="nc" id="L380">						System.out.println(&quot;best move: &quot; +best.x + &quot; &quot;</span>
+								+ best.y);
+
+<span class="nc" id="L383">						positions = PlaceDisk.AIPlace(best,</span>
+								AICol, positions);
+
+					}
+				}
+			}
+		}
+<span class="nc" id="L390">	}</span>
+
+	// the main program, runs the game
+	public static void main(String[] args) {
+<span class="nc" id="L394">		ConnectFour game = new ConnectFour();</span>
+<span class="nc" id="L395">		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L396">		game.pack();</span>
+<span class="nc" id="L397">		game.setVisible(true);</span>
+<span class="nc" id="L398">	}</span>
+
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L403">	}</span>
+
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L408">	}</span>
+
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L413">	}</span>
+
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L418">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

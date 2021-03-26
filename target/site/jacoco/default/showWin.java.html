@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>showWin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">showWin.java</span></div><h1>showWin.java</h1><pre class="source lang-java linenums">import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+
+// this class is used by class Check
+// strictly GUI 
+
+<span class="fc" id="L9">public class showWin extends ConnectFour{</span>
+	// if a game is won, a dot is displayed on the center of each of the four winning discs    
+	private static Color colour;
+<span class="fc" id="L12">	ConnectFour x = new ConnectFour ();</span>
+		
+	public String show (int [][] positions, int total){
+
+<span class="pc bpc" id="L16" title="3 of 6 branches missed.">		if (total == 1 | total == 2) {</span>
+			//x.winPos = check.getPos();
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">			if (total == 1) {</span>
+<span class="nc" id="L19">				x.colour = Color.red;</span>
+<span class="nc" id="L20">				x.progress = &quot;RED WINS!&quot;;</span>
+
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">			} else if (total == 2) {</span>
+<span class="fc" id="L23">				x.colour = Color.blue;</span>
+<span class="fc" id="L24">				x.progress = &quot;BLUE WINS!&quot;;</span>
+
+			}
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		} else if (total == 0) {</span>
+<span class="nc" id="L28">			x.colour = Color.MAGENTA;</span>
+<span class="nc" id="L29">			x.progress = &quot;It's a Draw&quot;;</span>
+
+		} else {
+<span class="nc" id="L32">			x.colour = Color.black;</span>
+<span class="nc" id="L33">			x.progress = &quot;Game in Progess&quot;;</span>
+		}
+<span class="fc" id="L35">		setColour(x.colour);</span>
+<span class="fc" id="L36">		return x.progress;</span>
+	}
+	
+	static void setColour (Color col){
+<span class="fc" id="L40">		colour = col;</span>
+<span class="fc" id="L41">	}</span>
+	
+	public Color getColour (){
+<span class="nc" id="L44">		return colour;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

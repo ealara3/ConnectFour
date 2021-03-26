@@ -1,0 +1,20 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+ConnectFour,default,ConnectFour.DrawingPanel.new ActionListener() {...},3,9,0,0,2,1,1,1,1,1
+ConnectFour,default,ConnectFour.DrawingPanel.new ActionListener() {...},86,9,8,0,18,1,5,1,1,1
+ConnectFour,default,currentPlayer,11,30,5,1,4,11,3,5,0,5
+ConnectFour,default,ConnectFour.DrawingPanel.new ActionListener() {...},36,9,4,0,8,1,3,1,1,1
+ConnectFour,default,Memory,0,100,0,8,0,20,0,8,0,4
+ConnectFour,default,ConnectFour.DrawingPanel.new ActionListener() {...},12,9,0,0,5,1,1,1,1,1
+ConnectFour,default,showWin,33,45,7,5,8,11,7,3,1,3
+ConnectFour,default,AI,125,344,35,35,28,63,33,15,5,8
+ConnectFour,default,Check,74,38,10,4,15,10,8,3,1,3
+ConnectFour,default,ConnectFour.DrawingPanel.new ActionListener() {...},154,9,8,0,25,1,5,1,1,1
+ConnectFour,default,connectFourAI,1232,1181,238,198,66,165,151,75,1,7
+ConnectFour,default,Restore,16,0,0,0,6,0,2,0,2,0
+ConnectFour,default,checkWin,252,370,25,39,14,36,19,19,1,5
+ConnectFour,default,Board,0,112,0,0,0,7,0,2,0,2
+ConnectFour,default,ConnectFour,225,186,36,0,47,26,24,2,6,2
+ConnectFour,default,currentPlayerAI,41,74,6,4,14,25,6,6,1,6
+ConnectFour,default,PlaceDisk,24,81,8,10,6,21,7,5,0,3
+ConnectFour,default,ConnectFour.DrawingPanel,334,141,28,0,50,29,15,1,1,1
+ConnectFour,default,checkWinability,302,56,59,5,19,8,32,2,0,2

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">AI.java</span></div><h1>AI.java</h1><pre class="source lang-java linenums">
+<span class="fc" id="L2">public class AI {</span>
+<span class="fc" id="L3">	static checkWin check = new checkWin();</span>
+<span class="fc" id="L4">	private static int [][] bestMove = {{-1,-1}};</span>
+<span class="fc" id="L5">	boolean isDraw = false;</span>
+	static int player;
+<span class="fc" id="L7">	static int [][] board = new int [7][6];</span>
+	
+	
+	public static void setPlayer(int p){ // sets the computer to the generated player
+<span class="fc" id="L11">		player = p;</span>
+<span class="fc" id="L12">	}</span>
+	
+
+	
+	public static int[][] randMove (int [][] b){
+<span class="nc bnc" id="L17" title="All 2 branches missed.">		for (int i = 0; i &lt; 7; i ++){</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">			for (int j = 0; j &lt; 6; j ++){</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">				if (b [i][j] ==0){</span>
+				//	System.out.println(player);
+<span class="nc" id="L21">					b[i][j] = player;</span>
+<span class="nc" id="L22">					board = b;</span>
+<span class="nc" id="L23">					return board;</span>
+				}
+			}
+		}
+<span class="nc" id="L27">		return board;</span>
+	}
+	
+	public static int [][] returnBoard(){
+<span class="nc" id="L31">		return board;</span>
+	}
+	public int [][] returnBestMove (int [][] board){
+		// for each column
+<span class="nc bnc" id="L35" title="All 2 branches missed.">			for (int i = 0; i &lt; 7; i++) {</span>
+				//for each row
+<span class="nc bnc" id="L37" title="All 2 branches missed.">				for (int j = 0; j &lt; 6; j++) {</span>
+<span class="nc bnc" id="L38" title="All 4 branches missed.">					if (i == bestMove[0][0] &amp;&amp; j == bestMove[0][1]){</span>
+<span class="nc" id="L39">						board[i][j]=player;</span>
+					}
+				}
+			}
+<span class="nc" id="L43">		return board;</span>
+	}
+	
+	public static void setBest (int [][] moves){
+<span class="fc" id="L47">		bestMove = moves;</span>
+<span class="fc" id="L48">	}</span>
+	
+	
+	
+	public boolean isDraw(int [][]board) {
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">		for(int row = 0;row &lt; 5;row++) {</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">			for(int col = 0;col &lt; 6;col++) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">				if(board[col][row] == 0) {</span>
+<span class="fc" id="L56">					return false;</span>
+				}
+			}
+		}
+<span class="nc" id="L60">		return true;</span>
+	}
+	
+	public int minimax(int depth,int alpha,int beta, int [][] board) {
+<span class="nc" id="L64">		 return (maxMove(depth,alpha,beta,board));</span>
+	}
+	
+	public int maxMove(int depth,int alpha,int beta, int [][] board) {
+<span class="fc" id="L68">		int max = -500025;</span>
+<span class="fc" id="L69">		int [][] b = board;</span>
+<span class="fc" id="L70">		int m = check.checkWin(board);</span>
+		//int m = testForWinner();
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">		if(m != 0) { // if someone already won</span>
+<span class="nc" id="L73">			return m;</span>
+		}
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">		if(depth &gt;= 6 || isDraw(board)) { // if out of bounds or if draw game</span>
+			//return analysis();
+<span class="fc" id="L77">			return m;</span>
+		}
+		
+<span class="fc" id="L80">		int [][] lMoves = findAllLegalMoves(board);</span>
+		
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">		for(int move = 0;move &lt; 6;move++) {</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">			if(lMoves[move][0] == -1 || lMoves[move][1] == -1) {</span>
+<span class="nc" id="L84">				continue;</span>
+			} else {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				if (b[lMoves[move][0]][lMoves[move][1]] == 0){</span>
+<span class="fc" id="L87">				b[lMoves[move][0]][lMoves[move][1]] = 2;</span>
+<span class="fc" id="L88">				int temp = minMove(depth + 1,alpha,beta,board);</span>
+<span class="fc" id="L89">				b[lMoves[move][0]][lMoves[move][1]] = 0;</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">				if(temp &gt; max) {</span>
+<span class="fc" id="L91">					max = temp;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">						if(depth == 0) {</span>
+<span class="fc" id="L93">							bestMove[0][0] = lMoves[move][0];</span>
+<span class="fc" id="L94">							bestMove[0][1] = lMoves[move][1];</span>
+<span class="fc" id="L95">							setBest(bestMove);</span>
+						}
+				}
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">				if(temp &gt; alpha) {</span>
+<span class="nc" id="L99">				   alpha = temp; </span>
+				}
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">				if(alpha &gt;= beta) {</span>
+<span class="fc" id="L102">				   return alpha;</span>
+				}
+				}
+			}
+		}
+<span class="nc" id="L107">		return max;</span>
+	}
+	
+	public int minMove(int depth,int alpha,int beta, int [][]board) {
+<span class="fc" id="L111">		int min = 500025;</span>
+<span class="fc" id="L112">		int b [][] = board;</span>
+<span class="fc" id="L113">		int m = check.checkWin(board);</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if(m != 0) {</span>
+<span class="nc" id="L115">			return m;</span>
+		}
+		/*if(depth &gt;= 6 || isDraw(board)) {
+			return analysis();
+		}
+		*/
+<span class="fc" id="L121">		int [][] lMoves = findAllLegalMoves(board);</span>
+		
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		for(int move = 0;move &lt; 6;move++) {</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">			if(lMoves[move][0] == -1 || lMoves[move][1] == -1) {</span>
+<span class="nc" id="L125">				continue;</span>
+			} else {
+<span class="fc bfc" id="L127" title="All 2 branches covered.">				if (b[lMoves[move][0]][lMoves[move][1]] == 0){</span>
+<span class="fc" id="L128">				b[lMoves[move][0]][lMoves[move][1]] = 1;</span>
+<span class="fc" id="L129">				int temp = maxMove(depth + 1,alpha,beta,board);</span>
+<span class="fc" id="L130">				b[lMoves[move][0]][lMoves[move][1]] = 0;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				if(temp &lt; min) {</span>
+<span class="fc" id="L132">					min = temp;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">					if(depth == 0) {</span>
+<span class="nc" id="L134">						bestMove[0][0] = lMoves[move][0];</span>
+<span class="nc" id="L135">						bestMove[0][1] = lMoves[move][1];</span>
+<span class="nc" id="L136">						setBest(bestMove);</span>
+					}
+				}
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">				if(temp &lt; beta) {</span>
+<span class="nc" id="L140">				   beta = temp;</span>
+				}
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">				if(alpha &gt;= beta) {</span>
+<span class="fc" id="L143">				   return beta;</span>
+			    }
+				}
+			}
+		}
+<span class="nc" id="L148">		return min;</span>
+	}
+	public int [][] findAllLegalMoves(int [][]board) {
+<span class="fc" id="L151">		int [][] legalMove = new int [7][6];</span>
+		
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (int i = 0; i &lt;7; i ++){</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">			for (int j = 0; j &lt; 6; j ++){</span>
+<span class="fc" id="L155">				legalMove [i][j] = -1;</span>
+			}
+		}
+		
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for(int c = 0;c &lt; 7;c++) {</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			for(int r = 5;r &gt;= 0;r--) {</span>
+			//	System.out.println(r + &quot; &quot; + c);
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">				if(board[c][r] == 0) {</span>
+<span class="fc" id="L163">					legalMove[c][0] = r;</span>
+<span class="fc" id="L164">					legalMove[c][1] = c;</span>
+<span class="fc" id="L165">					break;</span>
+				}
+			}
+		}
+<span class="fc" id="L169">		return legalMove;</span>
+	}
+	
+	// fill this in
+	public int analysis() {
+<span class="nc" id="L174">		int whoWon = 0;</span>
+<span class="nc" id="L175">		return whoWon;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

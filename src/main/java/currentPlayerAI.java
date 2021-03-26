@@ -57,7 +57,7 @@ public class currentPlayerAI {
 	
 	// randomly deciding which player plays first
 	@SuppressWarnings("static-access")
-	private static void Random() {
+	public static boolean Random() {
 
 		// randomly choosing a number between 1 or 2
 		int rand = 1 + (int) (Math.random() * 2);
@@ -84,6 +84,7 @@ public class currentPlayerAI {
 			playComp = 1;
 
 		}
+		return true;
 	}
 	
 }

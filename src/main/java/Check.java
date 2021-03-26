@@ -22,7 +22,7 @@ public class Check {
 	static Color colour;
 	static String progress;
 	
-	static void Update(int[][]positions){
+	static boolean Update(int[][]positions){
 		ConnectFour game = new ConnectFour();
 		
 		boolean winable = checkWinability.check(positions);
@@ -52,6 +52,7 @@ public class Check {
 			}
 			
 		}
+		return true;
 		
 	}
 	

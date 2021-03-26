@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Check.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Check.java</span></div><h1>Check.java</h1><pre class="source lang-java linenums">import java.awt.Color;
+import java.io.FileNotFoundException;
+
+// this class is used by ConnectFour
+// uses checkWinability, checkWin, showWin and Move
+
+// after every user interaction do a check
+<span class="fc" id="L8">public class Check {</span>
+	
+	// call on Move to check legality of the click and proceed with making a move 
+	
+	// if the move is made 
+	
+		// call on checkWin to check if the move cause a win 
+		
+			// if yes then do not continue 
+			
+			// if no then call on checkWinability to check if the move causes a game over
+	
+	static int [][] pos;
+	static int total;
+	static Color colour;
+	static String progress;
+	
+	static boolean Update(int[][]positions){
+<span class="fc" id="L26">		ConnectFour game = new ConnectFour();</span>
+		
+<span class="fc" id="L28">		boolean winable = checkWinability.check(positions);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">		if (winable == false ) { </span>
+<span class="nc" id="L30">			game.start = false;</span>
+<span class="nc" id="L31">			game.progress = &quot;GAME OVER&quot;;</span>
+<span class="nc" id="L32">			total = -1;</span>
+		}
+		else {
+<span class="fc" id="L35">			showWin show = new showWin();</span>
+<span class="fc" id="L36">			checkWin check = new checkWin();</span>
+<span class="fc" id="L37">			total = check.checkWin(positions);</span>
+<span class="pc bpc" id="L38" title="3 of 6 branches missed.">			if (total == 1 | total == 2){</span>
+<span class="nc" id="L39">				game.winPos = check.getPos(); </span>
+<span class="nc" id="L40">				game.start = false;</span>
+<span class="nc" id="L41">				game.progress = show.show(positions, total);</span>
+<span class="nc" id="L42">				total = check.checkWin(positions);</span>
+				
+<span class="nc bnc" id="L44" title="All 6 branches missed.">				if (total == 1 | total == 2) {</span>
+<span class="nc" id="L45">					pos = check.getPos();</span>
+<span class="nc" id="L46">					game.start = false;</span>
+				}
+<span class="nc" id="L48">				colour = show.getColour();</span>
+<span class="nc" id="L49">				progress = show.show(positions, total);</span>
+<span class="nc" id="L50">				show.setColour(Color.MAGENTA);</span>
+<span class="nc" id="L51">				game.colour = show.getColour();</span>
+			}
+			
+		}
+<span class="fc" id="L55">		return true;</span>
+		
+	}
+	
+	public static int [][] returnPos (){
+<span class="nc" id="L60">		return pos;</span>
+	}
+	
+	public static int returnTotal(){
+<span class="fc" id="L64">		return total;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

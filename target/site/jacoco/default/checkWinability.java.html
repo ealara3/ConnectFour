@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>checkWinability.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">checkWinability.java</span></div><h1>checkWinability.java</h1><pre class="source lang-java linenums">// this class is used by Check not
+
+// if it is no longer possible to win the game, game over 
+<span class="fc" id="L4">public class checkWinability {</span>
+
+	public static boolean check(int[][] positions) {
+		
+		// using the duplicating function already in checkWin to create an array of values
+<span class="fc" id="L9">		int[][] value = checkWin.duplicate(positions);</span>
+
+		// check for a horizontal win
+<span class="pc bpc" id="L12" title="1 of 2 branches missed.">		for (int row = 5; row &gt;= 0; row--) {</span>
+<span class="pc bpc" id="L13" title="1 of 2 branches missed.">			for (int col = 0; col &lt; 4; col++) { // don't check last three, as</span>
+												// that would result in out of
+												// bounds
+				// for every position check that it's value is equal to zero, or the next three positions' values
+<span class="pc bpc" id="L17" title="3 of 4 branches missed.">				if (value[row][col] == value[row][col+1]</span>
+						|| 0 == value[row][col+1]) {
+<span class="pc bpc" id="L19" title="3 of 4 branches missed.">					if (value[row][col] == value[row][col+2]</span>
+							|| 0 == value[row][col+2]) {
+<span class="pc bpc" id="L21" title="3 of 4 branches missed.">						if (value[row][col] == value[row][col+3]</span>
+								|| 0 == value[row][col+3]) {
+<span class="fc" id="L23">							return true;</span>
+						}
+					}
+				}
+			}
+		}
+
+		// check for a vertical win
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		for (int col = 0; col &lt; 7; col++) {</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">			for (int row = 2; row &gt;= 0; row--) { // don't check last three, as</span>
+													// that would result in out
+													// of bounds
+				// for every position check that it's value is equal to zero, or the next three positions' values
+<span class="nc bnc" id="L36" title="All 4 branches missed.">				if (value[row][col] == value[row+1][col]</span>
+						|| 0 == value[row+1][col]) {
+<span class="nc bnc" id="L38" title="All 4 branches missed.">					if (value[row][col] == value[row+2][col]</span>
+							|| 0 == value[row+2][col]) {
+<span class="nc bnc" id="L40" title="All 4 branches missed.">						if (value[row][col] == value[row+3][col]</span>
+								|| 0 == value[row+3][col]) {
+<span class="nc" id="L42">							return true;</span>
+						}
+					}
+				}
+			}
+		}
+
+		// check for left leaning diagonal win 
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		for (int col = 6; col &gt; 2; col--) {// don't check last 3, as that would</span>
+											// cause overflow
+<span class="nc bnc" id="L52" title="All 2 branches missed.">			for (int row = 5; row &gt; 2; row--) { // don't check last three, as</span>
+												// that would result in out of
+												// bounds
+				// for every position check that it's value is equal to zero, or the next three positions' values
+<span class="nc bnc" id="L56" title="All 4 branches missed.">				if (value[row][col] == value[row - 1][col - 1]</span>
+						|| 0 == value[row - 1][col - 1]) {
+<span class="nc bnc" id="L58" title="All 4 branches missed.">					if (value[row][col] == value[row - 2][col - 2]</span>
+							|| 0 == value[row - 2][col - 2]) {
+<span class="nc bnc" id="L60" title="All 4 branches missed.">						if (value[row][col] == value[row - 3][col - 3]</span>
+								|| 0 == value[row - 3][col - 3]) {
+<span class="nc" id="L62">							return true;</span>
+						}
+					}
+				}
+			}
+		}
+
+		// check for right leaning diagonal wins 
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		for (int col = 0; col &lt; 4; col++) {// dont check last 3, as that would</span>
+											// cause overflow
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			for (int row = 5; row &gt; 2; row--) { // don't check last three, as</span>
+												// that would result in out of
+												// bounds
+				// for every position check that it's value is equal to zero, or the next three positions' values
+<span class="nc bnc" id="L76" title="All 4 branches missed.">				if (value[row][col] == value[row - 1][col + 1]</span>
+						|| 0 == value[row - 1][col + 1]) {
+<span class="nc bnc" id="L78" title="All 4 branches missed.">					if (value[row][col] == value[row - 2][col + 2]</span>
+							|| 0 == value[row - 2][col + 2]) {
+<span class="nc bnc" id="L80" title="All 4 branches missed.">						if (value[row][col] == value[row - 3][col + 3]</span>
+								|| 0 == value[row - 3][col + 3]) {
+<span class="nc" id="L82">							return true;</span>
+						}
+					}
+				}
+			}
+		}
+		// if it didn't pass any of the previous conditions, the board holds no more possible wins
+<span class="nc" id="L89">		return false;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

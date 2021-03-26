@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">import java.awt.Polygon;
+
+// this class is used by ConnectFour 
+// deals strictly with GUI 
+// displays the game board
+
+<span class="fc" id="L7">public class Board {</span>
+	
+	////////////////// these next two parts are a repeat from ConnectFour
+	////////////////// so can someone fully move the GUI (only for the board display) from ConnectFour to here?
+	
+	// creates a polygon for the blue counter holder
+<span class="fc" id="L13">	static int xPoly1[] = { 25, 18, 122, 116, 70 }; // x-coordinates</span>
+<span class="fc" id="L14">	static int yPoly1[] = { 160, 270, 270, 160, 230 }; // y-coordinates</span>
+<span class="fc" id="L15">	static Polygon poly1 = new Polygon(xPoly1, yPoly1, xPoly1.length); // create a polygon type</span>
+
+	// creates a polygon for the red counter holder
+<span class="fc" id="L18">	static int xPoly2[] = { 879, 872, 978, 971, 924 }; // x-coordinates</span>
+<span class="fc" id="L19">	static int yPoly2[] = { 160, 270, 270, 160, 230 }; // y-coordinates</span>
+<span class="fc" id="L20">	static Polygon poly2 = new Polygon(xPoly2, yPoly2, xPoly2.length); // create a polygon type</span>
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Memory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Memory.java</span></div><h1>Memory.java</h1><pre class="source lang-java linenums">import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+// this class is used by PlaceDisk and Restore
+public class Memory {
+	
+<span class="fc" id="L11">	static int[][] savedPositions = new int[7][6];</span>
+	static Scanner in;
+	FileWriter out;
+
+<span class="fc" id="L15">	public Memory() throws IOException {</span>
+<span class="fc" id="L16">	}</span>
+
+	// saves the game into a text file
+	public int saveGame(int[][] board) throws IOException {
+<span class="fc" id="L20">		out = new FileWriter(new File(&quot;savedGame.txt&quot;));</span>
+		
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		for (int i = 0; i &lt; 6; i++) {</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">			for (int j = 0; j &lt; 7; j++) {</span>
+<span class="fc" id="L24">				out.write(board[j][i] + &quot;&quot;);</span>
+			}
+<span class="fc" id="L26">			out.write(&quot;\n&quot;);</span>
+		}
+				
+<span class="fc" id="L29">		out.close();</span>
+<span class="fc" id="L30">		return 1;</span>
+	}
+
+	// loads a game from a text file
+	public static int[][] loadGame() throws FileNotFoundException {
+<span class="fc" id="L35">		in = new Scanner(new FileReader(&quot;savedGame.txt&quot;));</span>
+		
+<span class="fc" id="L37">		int count = 0;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		while (in.hasNext()) {</span>
+<span class="fc" id="L39">			String current = in.nextLine();</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">			for (int j = 0; j &lt; 7; j++) {</span>
+<span class="fc" id="L41">				savedPositions[j][count] = Integer.parseInt(current.charAt(j)</span>
+						+ &quot;&quot;);
+			}
+<span class="fc" id="L44">			count++;</span>
+<span class="fc" id="L45">		}</span>
+<span class="fc" id="L46">		in.close();</span>
+
+<span class="fc" id="L48">		return savedPositions;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

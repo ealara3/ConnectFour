@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: TestPlaceDisk
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in TestPlaceDisk
+TestAIPlace(TestPlaceDisk)  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at TestPlaceDisk.TestAIPlace(TestPlaceDisk.java:21)
+

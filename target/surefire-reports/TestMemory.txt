@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: TestMemory
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec <<< FAILURE! - in TestMemory
+TestloadGame(TestMemory)  Time elapsed: 0.023 sec  <<< FAILURE!
+org.junit.internal.ArrayComparisonFailure: arrays first differed at element [1][4]; expected:<0> but was:<2>
+	at TestMemory.TestloadGame(TestMemory.java:17)
+Caused by: java.lang.AssertionError: expected:<0> but was:<2>
+	at TestMemory.TestloadGame(TestMemory.java:17)
+
+TestsaveGame(TestMemory)  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.AssertionError: expected null, but was:<1>
+	at TestMemory.TestsaveGame(TestMemory.java:10)
+

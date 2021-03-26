@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>currentPlayerAI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">currentPlayerAI.java</span></div><h1>currentPlayerAI.java</h1><pre class="source lang-java linenums">import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+// represents player who's turn it is 
+<span class="fc" id="L5">public class currentPlayerAI {</span>
+	
+<span class="fc" id="L7">	static boolean computer = false;</span>
+<span class="fc" id="L8">	static AI play = new AI();</span>
+<span class="fc" id="L9">	static int [][] board = new int [7][6];</span>
+	static String compCol, playCol;
+	static int playComp, playUser, row, col;
+	// players name is either Blue or Red
+	
+	// initialize it with None 
+<span class="fc" id="L15">	private static String currentPlayer = &quot;None&quot;;</span>
+	
+	public static void reset(){
+<span class="nc" id="L18">		currentPlayer = &quot;None&quot;;</span>
+<span class="nc" id="L19">		board = new int [7][6];</span>
+<span class="nc" id="L20">	}</span>
+	
+	// used to change the player's name to Red or Blue throughout the game 
+	private static void setPlayer(String string) {
+<span class="fc" id="L24">		currentPlayer = string;</span>
+<span class="fc" id="L25">	}</span>
+	
+	public static int [][] returnBoard(){
+<span class="fc" id="L28">		return board;</span>
+	}
+	//returns whether blue or red is the current player
+	public static String getPlayer(int [][] b){
+	//	System.out.print(b[6][5]);
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">		if (currentPlayer == &quot;None&quot;){</span>
+<span class="nc" id="L34">			Random();</span>
+		}
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">		else if (computer == true){</span>
+		//	play.randMove(b);
+<span class="nc" id="L38">			play.minimax(0,-1000000,1000000,b);</span>
+<span class="nc" id="L39">			board = play.returnBestMove(b);</span>
+			//computer = false;
+			/*x = new Minimax();
+			x.minFlag = true;
+			x.start();
+			x.interrupt();
+			row = x.rowNextMove;
+			col = x.colNextMove;
+			x.Move(row, col, 2);
+			board = x.gameBoard;*/
+<span class="nc" id="L49">			currentPlayer = compCol;</span>
+		}
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">		else if (computer == false){</span>
+<span class="fc" id="L52">			currentPlayer = playCol;</span>
+<span class="fc" id="L53">			computer = true;</span>
+		}
+<span class="fc" id="L55">		return currentPlayer;</span>
+	}
+	
+	// randomly deciding which player plays first
+	@SuppressWarnings(&quot;static-access&quot;)
+	public static boolean Random() {
+
+		// randomly choosing a number between 1 or 2
+<span class="fc" id="L63">		int rand = 1 + (int) (Math.random() * 2);</span>
+<span class="fc" id="L64">		rand = 1;</span>
+<span class="fc" id="L65">		System.out.println(&quot;You are player &quot; + rand);</span>
+
+		// if the number is 1 then blue is player 1 and red is computer
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">		if (rand == 1) {</span>
+<span class="fc" id="L69">			play.setPlayer(2);</span>
+<span class="fc" id="L70">			setPlayer(&quot;Blue&quot;);</span>
+<span class="fc" id="L71">			playCol = &quot;Blue&quot;;</span>
+<span class="fc" id="L72">			compCol = &quot;Red&quot;;</span>
+<span class="fc" id="L73">			playUser = 1;</span>
+<span class="fc" id="L74">			playComp = 2;</span>
+
+		}
+		// if the number is 2 then red is player 1 and blue is computer
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		else if (rand == 2) {</span>
+<span class="nc" id="L79">			play.setPlayer(1);</span>
+<span class="nc" id="L80">			setPlayer(&quot;Red&quot;);</span>
+<span class="nc" id="L81">			playCol = &quot;Red&quot;;</span>
+<span class="nc" id="L82">			compCol = &quot;Blue&quot;;</span>
+<span class="nc" id="L83">			playUser = 2;</span>
+<span class="nc" id="L84">			playComp = 1;</span>
+
+		}
+<span class="fc" id="L87">		return true;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

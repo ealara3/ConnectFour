@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>currentPlayer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ConnectFour</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">currentPlayer.java</span></div><h1>currentPlayer.java</h1><pre class="source lang-java linenums">import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+// represents player who's turn it is 
+<span class="fc" id="L5">public class currentPlayer {</span>
+	
+	// players name is either Blue or Red
+	
+	// initialize it with None 
+<span class="fc" id="L10">	private static int currentPlayer = 0;</span>
+	
+	// used to change the player's name to Red or Blue throughout the game 
+	private static void setPlayer(int val) {
+<span class="fc" id="L14">		currentPlayer = val;</span>
+<span class="fc" id="L15">	}</span>
+	//returns whether blue or red is the current player
+	public static int getPlayer(){
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">		if (currentPlayer == 0){</span>
+<span class="fc" id="L19">			Random();</span>
+		}
+		else{
+<span class="nc bnc" id="L22" title="All 2 branches missed.">			if (currentPlayer == 1){</span>
+<span class="nc" id="L23">				currentPlayer = 2;</span>
+			}
+<span class="nc bnc" id="L25" title="All 2 branches missed.">			else if (currentPlayer == 2){</span>
+<span class="nc" id="L26">				currentPlayer = 1;</span>
+			}
+		}
+<span class="fc" id="L29">		return currentPlayer;</span>
+	}
+	
+	// randomly deciding which player plays first
+	public static boolean Random() {
+
+		// randomly choosing a number between 1 or 2
+<span class="fc" id="L36">		int rand = 1 + (int) (Math.random() * 2);</span>
+<span class="fc" id="L37">		setPlayer(rand);</span>
+<span class="fc" id="L38">		System.out.println(rand);</span>
+		// if the number is 1 then blue is player 1 and red is player 2
+	/*	if (rand == 1) {
+			setPlayer(&quot;Blue&quot;);
+
+		}
+		// if the number is 2 then red is player 1 and blue is player 2
+		else if (rand == 2) {
+			setPlayer(&quot;Red&quot;);
+
+		}*/
+<span class="fc" id="L49">		return true;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

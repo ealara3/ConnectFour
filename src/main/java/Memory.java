@@ -16,7 +16,7 @@ public class Memory {
 	}
 
 	// saves the game into a text file
-	public void saveGame(int[][] board) throws IOException {
+	public int saveGame(int[][] board) throws IOException {
 		out = new FileWriter(new File("savedGame.txt"));
 		
 		for (int i = 0; i < 6; i++) {
@@ -27,6 +27,7 @@ public class Memory {
 		}
 				
 		out.close();
+		return 1;
 	}
 
 	// loads a game from a text file
